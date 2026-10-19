@@ -300,5 +300,86 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript de Bootstrap -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+    </script>
+
+    <script>
+        document.getElementById('formularioBootstrap').addEventListener(
+            'submit',
+            function (e) {
+                // Evita que el navegador recargue la página.
+                e.preventDefault();
+
+                // Captura los valores de los campos.
+                const nombres = document.getElementById('nombres').value;
+                const apellidos = document.getElementById('apellidos').value;
+                const fecha = document.getElementById('fechaNacimiento').value;
+                const ninos = document.getElementById('ninos').value;
+
+                const madre = document.querySelector(
+                    'input[name="madreCabeza"]:checked'
+                ).value;
+
+                const estudio = document.querySelector(
+                    'input[name="estudio"]:checked'
+                ).value;
+
+                // Captura todos los géneros seleccionados.
+                const generosSeleccionados = [];
+
+                document.querySelectorAll(
+                    'input[name="generos"]:checked'
+                ).forEach(function (cb) {
+                    generosSeleccionados.push(cb.value);
+                });
+
+                const generosTexto = generosSeleccionados.length > 0
+                    ? generosSeleccionados.join(', ')
+                    : 'Ninguno seleccionado';
+
+                // Organiza los datos para mostrarlos.
+                const respuestas = [
+                    ['Nombres', nombres],
+                    ['Apellidos', apellidos],
+                    ['Fecha de nacimiento', fecha],
+                    ['Cantidad de niños a cargo', ninos],
+                    ['Madre cabeza de familia', madre],
+                    ['Está realizando técnico/tecnólogo', estudio],
+                    ['Géneros de cine preferidos', generosTexto]
+                ];
+
+                // Construye los resultados de manera dinámica.
+                const contenidoResultados = document.getElementById(
+                    'contenidoResultados'
+                );
+
+                contenidoResultados.replaceChildren(
+                    ...respuestas.map(function ([etiqueta, valor]) {
+                        const parrafo = document.createElement('p');
+                        const titulo = document.createElement('strong');
+
+                        titulo.textContent = etiqueta + ':';
+                        parrafo.append(titulo, ' ' + valor);
+
+                        return parrafo;
+                    })
+                );
+
+                // Muestra los resultados y desplaza la página.
+                const resultados = document.getElementById('resultados');
+
+                resultados.style.display = 'block';
+
+                resultados.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        );
+    </script>
 </body>
 </html>
