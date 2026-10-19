@@ -97,6 +97,23 @@
     </style>
 </head>
 <body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
 
+                <h1 class="page-title text-center mb-3">
+                    Registro de información personal
+                </h1>
+
+                <p class="page-subtitle text-center mb-5">
+                    Interfaz clara y confiable, inspirada en la identidad
+                    visual del sector financiero.
+                </p>
+
+                <!-- El formulario se agregará en el paso 3 -->
+
+            </div>
+        </div>
+    </div>
 </body>
 </html>
