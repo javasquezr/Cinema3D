@@ -318,75 +318,104 @@
     </script>
 
     <script>
-        document.getElementById('formularioBootstrap').addEventListener(
+        const formulario = document.getElementById('formularioBootstrap');
+        
+        formulario.addEventListener(
             'submit',
-            function (e) {
+            async function (e) {
                 // Evita que el navegador recargue la página.
                 e.preventDefault();
 
                 // Captura los valores de los campos.
-                const nombres = document.getElementById('nombres').value;
-                const apellidos = document.getElementById('apellidos').value;
-                const fecha = document.getElementById('fechaNacimiento').value;
-                const ninos = document.getElementById('ninos').value;
-
-                const madre = document.querySelector(
-                    'input[name="madreCabeza"]:checked'
-                ).value;
-
-                const estudio = document.querySelector(
-                    'input[name="estudio"]:checked'
-                ).value;
-
-                // Captura todos los géneros seleccionados.
-                const generosSeleccionados = [];
-
-                document.querySelectorAll(
-                    'input[name="generos"]:checked'
-                ).forEach(function (cb) {
-                    generosSeleccionados.push(cb.value);
-                });
-
-                const generosTexto = generosSeleccionados.length > 0
-                    ? generosSeleccionados.join(', ')
-                    : 'Ninguno seleccionado';
-
-                // Organiza los datos para mostrarlos.
-                const respuestas = [
-                    ['Nombres', nombres],
-                    ['Apellidos', apellidos],
-                    ['Fecha de nacimiento', fecha],
-                    ['Cantidad de niños a cargo', ninos],
-                    ['Madre cabeza de familia', madre],
-                    ['Está realizando técnico/tecnólogo', estudio],
-                    ['Géneros de cine preferidos', generosTexto]
-                ];
-
-                // Construye los resultados de manera dinámica.
-                const contenidoResultados = document.getElementById(
-                    'contenidoResultados'
-                );
-
-                contenidoResultados.replaceChildren(
-                    ...respuestas.map(function ([etiqueta, valor]) {
-                        const parrafo = document.createElement('p');
-                        const titulo = document.createElement('strong');
-
-                        titulo.textContent = etiqueta + ':';
-                        parrafo.append(titulo, ' ' + valor);
-
-                        return parrafo;
-                    })
-                );
-
-                // Muestra los resultados y desplaza la página.
+                const boton = formulario.querySelector('button[type="submit"]');
+                const mensaje = document.getElementById('mensajeGuardado');
                 const resultados = document.getElementById('resultados');
+                const contenidoResultados = document.getElementById('contenidoResultados');
 
-                resultados.style.display = 'block';
+                // Ocultar mensajes anteriores
+                mensaje.style.display = 'none';
+                resultados.style.display = 'none';
 
-                resultados.scrollIntoView({
-                    behavior: 'smooth'
-                });
+                // Evitar envios repetidos mientras se procesa la solicitud
+                boton.disabled = true;
+                const textoOriginal = boton.textContent;
+                boton.textContent = 'Guardando...';
+
+                try {
+                    // Enviar los datos a Laravel
+                    const respuesta = await fetch(formulario.action, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: new FormData(formulario)
+                    });
+
+                    const data = await respuesta.json();
+
+                    // Laravel puede responder con errores de validacion (HTTP 422)
+                    if (!respuesta.ok){
+                        const errores = data.errors
+                            ? Object.values(data.errors).flat().join('\n')
+                            : data.message;
+                        
+                        throw new Error(errores || 'No fue posible guardar el registro.');
+                    }
+
+                    // Solo llegamos aqui si Laravel confirmo el guardado
+                    const registro = data.registro;
+
+                    const generosTexto = registro.generos.length > 0
+                        ? registro.generos.join(', ')
+                        : 'Ninguno seleccionado';
+                    
+                    const respuestas = [
+                        ['Numero de registro', registro.id],
+                        ['Nombres', registro.nombres],
+                        ['Apellidos', registro.apellidos],
+                        ['Fecha de nacimiento', registro.fechaNacimiento],
+                        ['Cantidad de niños a cargo', registro.ninos],
+                        ['Madre cabeza de familia', registro.madreCabeza],
+                        ['Está realizando técnico/tecnólogo', registro.estudio],
+                        ['Generos de cine preferidos', generosTexto]
+                    ];
+
+                    // Construir el resultado usando texto
+                    contenidoResultados.replaceChildren(
+                        ...respuestas.map(function ([etiqueta, valor]){
+                            const parrafo = document.createElement('p');
+                            const titulo = document.createElement('strong');
+
+                            titulo.textContent = etiqueta + ':';
+                            parrafo.append(titulo, ' ' + valor);
+
+                            return parrafo;
+                        })
+                    );
+
+                    // mostrar confirmacion y resultado
+                    mensaje.textContent = data.message
+                        +  'ID del registro: '
+                        + registro.id;
+
+                    mensaje.style.display = 'block';
+                    resultados.style.display = 'block';
+
+                    resultados.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+
+                    // Permitir un nuevo registro
+                    formulario.reset();
+                } catch (error) {
+                    mensaje.ClassName = 'alert alert-danger mt-3';
+                    mensaje.textContent = error.message;
+                    mensaje.style.display = 'block';
+                } finally {
+                    boton.disable = false;
+                    boton.textContent = textoOriginal;
+                }
             }
         );
     </script>
