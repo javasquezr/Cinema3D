@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RegistroPersonal;
 use Illuminate\Http\Request;
-use Iluminate\Validation\Rule;
+use Illuminate\Validation\Rule;
 
 class RegistroPersonalController extends Controller
 {
@@ -16,7 +16,7 @@ class RegistroPersonalController extends Controller
             'fechaNacimiento' => ['required', 'date', 'before_or_equal:today'],
             'ninos' => ['required', 'integer', 'min:0'],
             'madreCabeza' => ['required', Rule::in(['Sí', 'No'])],
-            'estudios' => ['required', Rule::in(['Sí', 'No'])],
+            'estudio' => ['required', Rule::in(['Sí', 'No'])],
             'generos' => ['nullable', 'array'],
             'generos.*' => ['string', Rule::in(['Acción', 'Comedia', 'Drama', 'Terror', 'Ciencia Ficción', 'Romance'])],
         ]);

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RegistroPersonal extends Model
 {
-    protected $table = 'registros_personales';
+    protected $table = 'registro_personals';
 
     protected $fillable = [
         'nombres',
@@ -14,7 +14,7 @@ class RegistroPersonal extends Model
         'fecha_nacimiento',
         'ninos',
         'madre_cabeza',
-        'estudios',
+        'estudio',
         'generos',
     ];
 
@@ -24,7 +24,7 @@ class RegistroPersonal extends Model
         'fecha_nacimiento' => 'date',
         'ninos' => 'integer',
         'madre_cabeza' => 'boolean',
-        'estudios' => 'boolean',
+        'estudio' => 'boolean',
         'generos' => 'array',
       ];  
     }

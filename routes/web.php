@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistroPersonalController;
 
 Route::get('/', function () {
-    return view('cinema3d');
+    return redirect()->route('registros.index');
 });
 
-Route::post(
-    '/registros', 
-    [RegistroPersonalController::class, 'store']
-)->name('registros.store');
+Route::resource(
+    'registros', 
+    RegistroPersonalController::class
+);
