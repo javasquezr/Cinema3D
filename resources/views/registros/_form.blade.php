@@ -27,8 +27,8 @@
 @endphp
 
 <form action="{{ $esEdicion
-        ? route('registro.update', $registro)
-        : route('registro.store') }}"
+        ? route('registros.update', $registro)
+        : route('registros.store') }}"
       method="POST">
 
       @csrf

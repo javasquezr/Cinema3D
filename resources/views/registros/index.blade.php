@@ -3,7 +3,7 @@
 @section('title', 'Registros - Cinema3D')
 
 @section('content')
-    <div class="d-flex flex-wrap justify-content-between align-item-center gap-3 mb-4">    
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
             <h1 class="h3 mb-1">Registros de Cinema3D</h1>
             <p class="text-secondary mb-0">
@@ -11,8 +11,10 @@
             </p>
         </div>
 
-        <a href="{{ route('registros.create') }}" class="btn btn-primary">
-            + Nuevo registro
+        <a href="{{ route('registros.create') }}"
+        class="btn btn-primary btn-sm px-3 py-2">
+            <i class="bi bi-plus-lg me-1"></i>
+            Nuevo registro
         </a>
     </div>
 

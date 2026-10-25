@@ -1,11 +1,14 @@
+
 @extends('layouts.app')
 
 @section('title', 'Detalle del registro - Cinema3D')
 
 @section('content')
     <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-item-center">   
-            <h1>Detalle del registro #{{ $registro->id }}</h1>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h1 class="h4 mb-0">
+                Detalle del registro #{{ $registro->id }}
+            </h1>
 
             <a href="{{ route('registros.edit', $registro) }}"
                class="btn btn-primary btn-sm">
@@ -22,32 +25,44 @@
                 <dd class="col-sm-8">{{ $registro->apellidos }}</dd>
 
                 <dt class="col-sm-4">Fecha de nacimiento</dt>
-                <dd class="col-sm-8">{{ $registro->fecha_nacimiento->format('d/m/Y') }}</dd>
+                <dd class="col-sm-8">
+                    {{ $registro->fecha_nacimiento->format('d/m/Y') }}
+                </dd>
 
                 <dt class="col-sm-4">Número de niños a cargo</dt>
                 <dd class="col-sm-8">{{ $registro->ninos }}</dd>
 
                 <dt class="col-sm-4">Madre cabeza de familia</dt>
-                <dd class="col-sm-8">{{ $registro->madre_cabeza ? 'Sí' : 'No' }}</dd>
+                <dd class="col-sm-8">
+                    {{ $registro->madre_cabeza ? 'Sí' : 'No' }}
+                </dd>
 
                 <dt class="col-sm-4">Estudia técnico o tecnólogo</dt>
-                <dd class="col-sm-8">{{ $registro->estudio ? 'Sí' : 'No' }}</dd>
+                <dd class="col-sm-8">
+                    {{ $registro->estudio ? 'Sí' : 'No' }}
+                </dd>
 
                 <dt class="col-sm-4">Géneros preferidos</dt>
-                <dd class="col-sm-8">{{ implode(', ', $registro->generos ?? []) ?: 'Ninguno' }}</dd>
+                <dd class="col-sm-8">
+                    {{ implode(', ', $registro->generos ?? []) ?: 'Ninguno' }}
+                </dd>
 
                 <dt class="col-sm-4">Fecha de creación</dt>
-                <dd class="col-sm-8">{{ $registro->created_at?->format('d/m/Y H:i') }}</dd>
+                <dd class="col-sm-8">
+                    {{ $registro->created_at?->format('d/m/Y H:i') }}
+                </dd>
 
                 <dt class="col-sm-4">Última actualización</dt>
-                <dd class="col-sm-8">{{ $registro->updated_at?->format('d/m/Y H:i') }}</dd>
+                <dd class="col-sm-8">
+                    {{ $registro->updated_at?->format('d/m/Y H:i') }}
+                </dd>
             </dl>
         </div>
 
         <div class="card-footer">
-            <a href="{{ route('registros.index) }}" 
+            <a href="{{ route('registros.index') }}"
                class="btn btn-outline-secondary">
-               Volver al listado
+                Volver al listado
             </a>
         </div>
     </div>
